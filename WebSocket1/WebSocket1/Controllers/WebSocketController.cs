@@ -6,6 +6,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web;
 using System.Web.Http;
+using System.Web.UI.WebControls;
 using WebSocket1.Models;
 
 namespace WebSocket1.Controllers
@@ -26,6 +27,9 @@ namespace WebSocket1.Controllers
             private static int nPlayers = 0;
             private readonly string _nom;
             private static string board = "";
+            private static int lowestTotal = int.MaxValue;
+            private static string clientWithLowestTotal = "";
+            private static List<(string client, int total)> receivedRecords = new List<(string, int)>();
 
             //variables estáticas de acciones de los mensajes entre el cliente el servidor
             //todo lo que se cambie aquí se deberá cambiar en el cliente y viceversa.
@@ -38,7 +42,7 @@ namespace WebSocket1.Controllers
             private const string BYE = "adios";
             private const string RIGHT = "R";
             private const string CAN_START = "puedo empezar";
-            private const string GET_COUNT = "dame recuento";
+            private const string GET_TOTAL = "GetTotal";
             public SocketHandler(string nom)
             {
                 _nom = nom;
@@ -67,6 +71,7 @@ namespace WebSocket1.Controllers
             {
                 string action = message[0];
                 string content = message[1];
+
                 switch (action)
                 {
                     case GET_TILES:
@@ -81,9 +86,21 @@ namespace WebSocket1.Controllers
                     case CAN_START:
                         Sockets.Broadcast($"{CAN_START},");
                         break;
+                    case GET_TOTAL:
+                        SetLowestTotal(content);
+                        break;
+
                 }
             }
-
+            public void SetLowestTotal(string message)
+            {
+                int tempTotal = int.Parse(message);
+                if (tempTotal < lowestTotal)
+                {
+                    lowestTotal = tempTotal;
+                }
+                Console.WriteLine(lowestTotal);
+            }
             public void ChangeTurn(int nextPlayer)
             {
                 Sockets.Broadcast($"{CHANGE_TURN},{nextPlayer}");
@@ -100,7 +117,7 @@ namespace WebSocket1.Controllers
                 string messageWiner = !String.IsNullOrEmpty(winer) ? $"{_nom} won the game!" : "";
                 if (BoardIsBlocked())
                 {
-                    messageWiner = "bloqueo";
+                    messageWiner = "BoardClosed";
                 }
                 Sockets.Broadcast($"{RELOAD_BOARD},{board},{GetNextPlayer(player)},{messageWiner}");
 
