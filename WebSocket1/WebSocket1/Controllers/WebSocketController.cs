@@ -44,6 +44,9 @@ namespace WebSocket1.Controllers
             private const string CAN_START = "puedo empezar";
             private const string GET_TOTAL = "GetTotal";
             private const string LOWEST_TOTAL = "LowestTotal";
+
+            private const string LOWEST_INTO_CLIENT = "LowesIntoClient";
+
             public SocketHandler(string nom)
             {
                 _nom = nom;
@@ -88,23 +91,19 @@ namespace WebSocket1.Controllers
                         Sockets.Broadcast($"{CAN_START},");
                         break;
                     case GET_TOTAL:
-                        if (receivedRecords.Count == 4)
-                        {
-                            int lowestTotal = GetLowestTotal();
-                            Sockets.Broadcast($"{LOWEST_TOTAL},{lowestTotal}");
-                        }
-                        else
-                        {
-                            GetTotalPoints(content);
-                        }
+                        GetTotalPoints(content);
                         break;
-
                 }
             }
             public void GetTotalPoints(string message)
             {
                 int tempTotal = int.Parse(message);
                 receivedRecords.Add(("", tempTotal));
+                if (receivedRecords.Count == 4)
+                {
+                    int lowestNumber = GetLowestTotal();
+                    Sockets.Broadcast($"{LOWEST_INTO_CLIENT},{lowestNumber}");
+                }
             }
             public int GetLowestTotal()
             {
@@ -137,8 +136,6 @@ namespace WebSocket1.Controllers
                     messageWiner = "BoardClosed";
                 }
                 Sockets.Broadcast($"{RELOAD_BOARD},{board},{GetNextPlayer(player)},{messageWiner}");
-
-
             }
 
             public bool BoardIsBlocked()
