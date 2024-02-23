@@ -1,0 +1,10 @@
+C:\Users\cv\source\repos\WebSocketClientGraphicInterface\WebSocketClientGraphicInterface\bin\Debug\WebSocketClientGraphicInterface.exe.config
+C:\Users\cv\source\repos\WebSocketClientGraphicInterface\WebSocketClientGraphicInterface\bin\Debug\WebSocketClientGraphicInterface.exe
+C:\Users\cv\source\repos\WebSocketClientGraphicInterface\WebSocketClientGraphicInterface\bin\Debug\WebSocketClientGraphicInterface.pdb
+C:\Users\cv\source\repos\WebSocketClientGraphicInterface\WebSocketClientGraphicInterface\obj\Debug\WebSocketClientGraphicInterface.csproj.AssemblyReference.cache
+C:\Users\cv\source\repos\WebSocketClientGraphicInterface\WebSocketClientGraphicInterface\obj\Debug\WebSocketClientGraphicInterface.Form1.resources
+C:\Users\cv\source\repos\WebSocketClientGraphicInterface\WebSocketClientGraphicInterface\obj\Debug\WebSocketClientGraphicInterface.Properties.Resources.resources
+C:\Users\cv\source\repos\WebSocketClientGraphicInterface\WebSocketClientGraphicInterface\obj\Debug\WebSocketClientGraphicInterface.csproj.GenerateResource.cache
+C:\Users\cv\source\repos\WebSocketClientGraphicInterface\WebSocketClientGraphicInterface\obj\Debug\WebSocketClientGraphicInterface.csproj.CoreCompileInputs.cache
+C:\Users\cv\source\repos\WebSocketClientGraphicInterface\WebSocketClientGraphicInterface\obj\Debug\WebSocketClientGraphicInterface.exe
+C:\Users\cv\source\repos\WebSocketClientGraphicInterface\WebSocketClientGraphicInterface\obj\Debug\WebSocketClientGraphicInterface.pdb
