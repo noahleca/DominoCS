@@ -43,6 +43,7 @@ namespace WebSocketClientGraphicInterface.Controller
         private const string RIGHT = "R";
         private const string CAN_START = "puedo empezar";
         private const string GIVE_TOTAL = "GiveTotal";
+        private const string LOWEST_TOTAL = "LowestTotal";
         public Controller()
         {
             f = new Form1();
@@ -147,6 +148,9 @@ namespace WebSocketClientGraphicInterface.Controller
                     break;
                 case CAN_START:
                     canPlay = true;
+                    break;
+                case LOWEST_TOTAL:
+                    MessageBox.Show("Puntuación ganadora: " + message);
                     break;
                 default:
                     MessageBox.Show("Another message..." + message);
@@ -397,7 +401,7 @@ namespace WebSocketClientGraphicInterface.Controller
                 if (messageWiner.Equals("BoardClosed"))
                 {
                     WriteMessages($"{GIVE_TOTAL},{GetTotalPoints()}");
-                    MessageBox.Show($"Total points: {GetTotalPoints()}", "Total points", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    //MessageBox.Show($"Total points: {GetTotalPoints()}", "Total points", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 else
                 {

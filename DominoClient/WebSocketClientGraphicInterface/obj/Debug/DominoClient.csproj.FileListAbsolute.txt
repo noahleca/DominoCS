@@ -28,3 +28,13 @@ C:\Users\noahl\Documents\DominoCS\DominoClient\WebSocketClientGraphicInterface\o
 C:\Users\noahl\Documents\DominoCS\DominoClient\WebSocketClientGraphicInterface\obj\Debug\DominoClient.csproj.CoreCompileInputs.cache
 C:\Users\noahl\Documents\DominoCS\DominoClient\WebSocketClientGraphicInterface\obj\Debug\WebSocketClientGraphicInterface.exe
 C:\Users\noahl\Documents\DominoCS\DominoClient\WebSocketClientGraphicInterface\obj\Debug\WebSocketClientGraphicInterface.pdb
+C:\Users\nlece\Documents\FORMACIÓN NOAH\formacionNoah\DominoCS\DominoClient\WebSocketClientGraphicInterface\bin\Debug\WebSocketClientGraphicInterface.exe.config
+C:\Users\nlece\Documents\FORMACIÓN NOAH\formacionNoah\DominoCS\DominoClient\WebSocketClientGraphicInterface\bin\Debug\WebSocketClientGraphicInterface.exe
+C:\Users\nlece\Documents\FORMACIÓN NOAH\formacionNoah\DominoCS\DominoClient\WebSocketClientGraphicInterface\bin\Debug\WebSocketClientGraphicInterface.pdb
+C:\Users\nlece\Documents\FORMACIÓN NOAH\formacionNoah\DominoCS\DominoClient\WebSocketClientGraphicInterface\obj\Debug\DominoClient.csproj.AssemblyReference.cache
+C:\Users\nlece\Documents\FORMACIÓN NOAH\formacionNoah\DominoCS\DominoClient\WebSocketClientGraphicInterface\obj\Debug\WebSocketClientGraphicInterface.Form1.resources
+C:\Users\nlece\Documents\FORMACIÓN NOAH\formacionNoah\DominoCS\DominoClient\WebSocketClientGraphicInterface\obj\Debug\WebSocketClientGraphicInterface.Properties.Resources.resources
+C:\Users\nlece\Documents\FORMACIÓN NOAH\formacionNoah\DominoCS\DominoClient\WebSocketClientGraphicInterface\obj\Debug\DominoClient.csproj.GenerateResource.cache
+C:\Users\nlece\Documents\FORMACIÓN NOAH\formacionNoah\DominoCS\DominoClient\WebSocketClientGraphicInterface\obj\Debug\DominoClient.csproj.CoreCompileInputs.cache
+C:\Users\nlece\Documents\FORMACIÓN NOAH\formacionNoah\DominoCS\DominoClient\WebSocketClientGraphicInterface\obj\Debug\WebSocketClientGraphicInterface.exe
+C:\Users\nlece\Documents\FORMACIÓN NOAH\formacionNoah\DominoCS\DominoClient\WebSocketClientGraphicInterface\obj\Debug\WebSocketClientGraphicInterface.pdb

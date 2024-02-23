@@ -244,6 +244,6 @@ C:\Users\nlece\Documents\FORMACIÓN NOAH\formacionNoah\DominoCS\WebSocket1\WebSo
 C:\Users\nlece\Documents\FORMACIÓN NOAH\formacionNoah\DominoCS\WebSocket1\WebSocket1\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
 C:\Users\nlece\Documents\FORMACIÓN NOAH\formacionNoah\DominoCS\WebSocket1\WebSocket1\obj\Debug\WebSocket1.csproj.AssemblyReference.cache
 C:\Users\nlece\Documents\FORMACIÓN NOAH\formacionNoah\DominoCS\WebSocket1\WebSocket1\obj\Debug\WebSocket1.csproj.CoreCompileInputs.cache
-C:\Users\nlece\Documents\FORMACIÓN NOAH\formacionNoah\DominoCS\WebSocket1\WebSocket1\obj\Debug\WebSocket1.csproj.CopyComplete
 C:\Users\nlece\Documents\FORMACIÓN NOAH\formacionNoah\DominoCS\WebSocket1\WebSocket1\obj\Debug\WebSocket1.dll
 C:\Users\nlece\Documents\FORMACIÓN NOAH\formacionNoah\DominoCS\WebSocket1\WebSocket1\obj\Debug\WebSocket1.pdb
+C:\Users\nlece\Documents\FORMACIÓN NOAH\formacionNoah\DominoCS\WebSocket1\WebSocket1\obj\Debug\WebSocket1.csproj.Up2Date

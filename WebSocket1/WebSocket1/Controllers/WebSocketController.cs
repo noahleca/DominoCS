@@ -43,6 +43,7 @@ namespace WebSocket1.Controllers
             private const string RIGHT = "R";
             private const string CAN_START = "puedo empezar";
             private const string GET_TOTAL = "GetTotal";
+            private const string LOWEST_TOTAL = "LowestTotal";
             public SocketHandler(string nom)
             {
                 _nom = nom;
@@ -87,19 +88,35 @@ namespace WebSocket1.Controllers
                         Sockets.Broadcast($"{CAN_START},");
                         break;
                     case GET_TOTAL:
-                        SetLowestTotal(content);
+                        if (receivedRecords.Count == 4)
+                        {
+                            int lowestTotal = GetLowestTotal();
+                            Sockets.Broadcast($"{LOWEST_TOTAL},{lowestTotal}");
+                        }
+                        else
+                        {
+                            GetTotalPoints(content);
+                        }
                         break;
 
                 }
             }
-            public void SetLowestTotal(string message)
+            public void GetTotalPoints(string message)
             {
                 int tempTotal = int.Parse(message);
-                if (tempTotal < lowestTotal)
+                receivedRecords.Add(("", tempTotal));
+            }
+            public int GetLowestTotal()
+            {
+                int lowestTotal = int.MaxValue;
+                foreach (var record in receivedRecords)
                 {
-                    lowestTotal = tempTotal;
+                    if (lowestTotal > record.total)
+                    {
+                        lowestTotal = record.total;
+                    }
                 }
-                Console.WriteLine(lowestTotal);
+                return lowestTotal;
             }
             public void ChangeTurn(int nextPlayer)
             {
