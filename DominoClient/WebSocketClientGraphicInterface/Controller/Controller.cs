@@ -42,7 +42,7 @@ namespace WebSocketClientGraphicInterface.Controller
         private const string BYE = "adios";
         private const string RIGHT = "R";
         private const string CAN_START = "puedo empezar";
-        private const string GET_COUNT = "dame recuento";
+        private const string GIVE_TOTAL = "GiveTotal";
         public Controller()
         {
             f = new Form1();
@@ -147,9 +147,6 @@ namespace WebSocketClientGraphicInterface.Controller
                     break;
                 case CAN_START:
                     canPlay = true;
-                    break;
-                case GET_COUNT:
-
                     break;
                 default:
                     MessageBox.Show("Another message..." + message);
@@ -397,8 +394,9 @@ namespace WebSocketClientGraphicInterface.Controller
             f.board.Text = board;
             if (!String.IsNullOrEmpty(messageWiner))
             {
-                if (messageWiner.Equals("bloqueo"))
+                if (messageWiner.Equals("BoardClosed"))
                 {
+                    WriteMessages($"{GIVE_TOTAL},{GetTotalPoints()}");
                     MessageBox.Show($"Total points: {GetTotalPoints()}", "Total points", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 else
