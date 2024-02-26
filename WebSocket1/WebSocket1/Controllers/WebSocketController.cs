@@ -91,31 +91,34 @@ namespace WebSocket1.Controllers
                         Sockets.Broadcast($"{CAN_START},");
                         break;
                     case GET_TOTAL:
-                        GetTotalPoints(content);
+                        GetTotalPoints(content, message[2]);
                         break;
                 }
             }
-            public void GetTotalPoints(string message)
+            public void GetTotalPoints(string message, string username)
             {
                 int tempTotal = int.Parse(message);
-                receivedRecords.Add(("", tempTotal));
+                receivedRecords.Add((username, tempTotal));
                 if (receivedRecords.Count == 4)
                 {
-                    int lowestNumber = GetLowestTotal();
-                    Sockets.Broadcast($"{LOWEST_INTO_CLIENT},{lowestNumber}");
+                    LowestPlayer lowestNumber = GetLowestTotal();
+                    Sockets.Broadcast($"{LOWEST_INTO_CLIENT},{lowestNumber.points}, {lowestNumber.name}");
                 }
             }
-            public int GetLowestTotal()
+            public LowestPlayer GetLowestTotal()
             {
+                LowestPlayer lp = new LowestPlayer("", 0);
                 int lowestTotal = int.MaxValue;
                 foreach (var record in receivedRecords)
                 {
                     if (lowestTotal > record.total)
                     {
                         lowestTotal = record.total;
+                        lp.name = record.client;
+                        lp.points = record.total;
                     }
                 }
-                return lowestTotal;
+                return lp;
             }
             public void ChangeTurn(int nextPlayer)
             {

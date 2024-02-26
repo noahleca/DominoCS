@@ -152,7 +152,8 @@ namespace WebSocketClientGraphicInterface.Controller
                     canPlay = true;
                     break;
                 case LOWEST_INTO_CLIENT:
-                    MessageBox.Show("Puntuación ganadora: " + message[1]);
+                    MessageBox.Show("Ha ganado la partida: " + message[2] + " con un total de: " + message[1] + " puntos restantes. ¡Gracias por jugar!");
+                    Disconnect();
                     break;
                 default:
 
@@ -402,7 +403,7 @@ namespace WebSocketClientGraphicInterface.Controller
             {
                 if (messageWiner.Equals("BoardClosed"))
                 {
-                    WriteMessages($"{GET_TOTAL},{GetTotalPoints()}");
+                    WriteMessages($"{GET_TOTAL},{GetTotalPoints()}, {f.userName.Text}");
                 }
                 else
                 {

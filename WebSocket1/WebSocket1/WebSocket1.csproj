@@ -165,6 +165,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Game.cs" />
+    <Compile Include="Models\LowestPlayer.cs" />
     <Compile Include="Models\Player.cs" />
     <Compile Include="Models\Tile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
