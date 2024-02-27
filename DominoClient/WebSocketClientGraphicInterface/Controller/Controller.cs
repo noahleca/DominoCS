@@ -24,12 +24,12 @@ namespace WebSocketClientGraphicInterface.Controller
         private bool canPlay = false;
 
         //mensajes de error:
-        private const string msgError6x6 = "You need to click on double six tile!";
-        private const string msgErrorNotYourTurn = "Wait! Still is not your turn...";
-        private const string msgErrorNotEnoughtPlayers = "Wait! There aren't 4 players in the room yet...";
-        private const string msgErrorDisconnected = "You are disconnected from the room...";
-        private const string msgErrorRoomFull = "The room is full...";
-        private const string msgErrorCannotPutTile = "Cannot put that tile...";
+        private const string msgError6x6 = "¡Para empezar necesitas tirar el doble 6!";
+        private const string msgErrorNotYourTurn = "¡Espera! Todavia no es tu turno...";
+        private const string msgErrorNotEnoughtPlayers = "¡Espera! Aún no hay 4 jugadores en la sala...";
+        private const string msgErrorDisconnected = "Has sido desconectado de la sala...";
+        private const string msgErrorRoomFull = "La sala está llena...";
+        private const string msgErrorCannotPutTile = "No puedes tirar esta ficha...";
 
         //variables estáticas de acciones de los mensajes entre el cliente el servidor
         //todo lo que se cambie aquí se deberá cambiar en el cliente y viceversa.
@@ -130,7 +130,7 @@ namespace WebSocketClientGraphicInterface.Controller
             {
                 case GET_NUM_PLAYER:
                     nPlayer = int.Parse(content);
-                    WriteMessageInTextList($"Welcome {f.userName.Text}! You are player {nPlayer}.");
+                    WriteMessageInTextList($"Bienvenido {f.userName.Text}! Eres el jugador numero {nPlayer}.");
                     break;
                 case SALA_LLENA:
                     MessageBox.Show(msgErrorRoomFull, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -152,8 +152,9 @@ namespace WebSocketClientGraphicInterface.Controller
                     canPlay = true;
                     break;
                 case LOWEST_INTO_CLIENT:
-                    MessageBox.Show("Ha ganado la partida: " + message[2] + " con un total de: " + message[1] + " puntos restantes. ¡Gracias por jugar!");
+                    MessageBox.Show("Ha ganado la partida:" + message[2] + " con un total de: " + message[1] + " puntos restantes. ¡Gracias por jugar!");
                     Disconnect();
+                    f.connect.Enabled = false;
                     break;
                 default:
 
