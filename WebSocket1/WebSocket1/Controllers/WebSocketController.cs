@@ -27,12 +27,9 @@ namespace WebSocket1.Controllers
             private static int nPlayers = 0;
             private readonly string _nom;
             private static string board = "";
-            private static int lowestTotal = int.MaxValue;
-            private static string clientWithLowestTotal = "";
             private static List<(string client, int total)> receivedRecords = new List<(string, int)>();
 
-            //variables estáticas de acciones de los mensajes entre el cliente el servidor
-            //todo lo que se cambie aquí se deberá cambiar en el cliente y viceversa.
+            /*Variables estáticas de acciones para los mensajes entre el cliente y el servidor.*/
             private const string GET_NUM_PLAYER = "dar numero de jugador";
             private const string SALA_LLENA = "sala llena";
             private const string GET_TILES = "pedir fichas";
@@ -43,8 +40,6 @@ namespace WebSocket1.Controllers
             private const string RIGHT = "R";
             private const string CAN_START = "puedo empezar";
             private const string GET_TOTAL = "GetTotal";
-            private const string LOWEST_TOTAL = "LowestTotal";
-
             private const string LOWEST_INTO_CLIENT = "LowesIntoClient";
 
             public SocketHandler(string nom)

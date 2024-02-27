@@ -23,16 +23,13 @@ namespace WebSocketClientGraphicInterface.Controller
         private bool connected = false;
         private bool canPlay = false;
 
-        //mensajes de error:
         private const string msgError6x6 = "¡Para empezar necesitas tirar el doble 6!";
-        private const string msgErrorNotYourTurn = "¡Espera! Todavia no es tu turno...";
-        private const string msgErrorNotEnoughtPlayers = "¡Espera! Aún no hay 4 jugadores en la sala...";
-        private const string msgErrorDisconnected = "Has sido desconectado de la sala...";
+        private const string msgErrorCannotThrowYet = "Ahora no puedes tirar una ficha.";
+        private const string msgErrorCannotPass = "Aún no pasar el turno...";
         private const string msgErrorRoomFull = "La sala está llena...";
         private const string msgErrorCannotPutTile = "No puedes tirar esta ficha...";
 
-        //variables estáticas de acciones de los mensajes entre el cliente el servidor
-        //todo lo que se cambie aquí se deberá cambiar en el cliente y viceversa.
+        /*Variables estáticas de acciones para los mensajes entre el cliente y el servidor.*/
         private const string GET_NUM_PLAYER = "dar numero de jugador";
         private const string SALA_LLENA = "sala llena";
         private const string GET_TILES = "pedir fichas";
@@ -43,7 +40,6 @@ namespace WebSocketClientGraphicInterface.Controller
         private const string RIGHT = "R";
         private const string CAN_START = "puedo empezar";
         private const string GET_TOTAL = "GetTotal";
-        private const string LOWEST_TOTAL = "LowestTotal";
         private const string LOWEST_INTO_CLIENT = "LowesIntoClient";
         public Controller()
         {
@@ -186,47 +182,33 @@ namespace WebSocketClientGraphicInterface.Controller
 
         void TileClicked(object sender, MouseEventArgs e)
         {
-            if (connected)
+            if (connected && canPlay && f.TURN.Visible)
             {
-                if (canPlay)
+                if (firstPlayer)
                 {
-                    if (f.TURN.Visible)
+                    if ((sender as Button).Text.Equals("🂓"))
                     {
-                        if (firstPlayer)
-                        {
-                            if ((sender as Button).Text.Equals("🂓"))
-                            {
-                                string side = e.Button == MouseButtons.Right ? RIGHT : "";
+                        string side = e.Button == MouseButtons.Right ? RIGHT : "";
 
 
-                                firstPlayer = false;
-                                PutTile((sender as Button), side, "");
-                            }
-                            else
-                            {
-                                MessageBox.Show(msgError6x6, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            }
-                        }
-                        else
-                        {
-                            string side = e.Button == MouseButtons.Right ? RIGHT : "";
-                            string boardTile = side == RIGHT ? f.board.Text.Substring(f.board.Text.Length - 2, 2) : f.board.Text.Substring(0, 2);
-                            PutTile((sender as Button), side, boardTile);
-                        }
+                        firstPlayer = false;
+                        PutTile((sender as Button), side, "");
                     }
                     else
                     {
-                        MessageBox.Show(msgErrorNotYourTurn, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show(msgError6x6, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
                 else
                 {
-                    MessageBox.Show(msgErrorNotEnoughtPlayers, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    string side = e.Button == MouseButtons.Right ? RIGHT : "";
+                    string boardTile = side == RIGHT ? f.board.Text.Substring(f.board.Text.Length - 2, 2) : f.board.Text.Substring(0, 2);
+                    PutTile((sender as Button), side, boardTile);
                 }
             }
             else
             {
-                MessageBox.Show(msgErrorDisconnected, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(msgErrorCannotThrowYet, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -364,37 +346,15 @@ namespace WebSocketClientGraphicInterface.Controller
 
         public void PassClicked(object sender, EventArgs e)
         {
-            if (connected)
+            if (connected && canPlay && f.TURN.Visible && !firstPlayer)
             {
-                if (canPlay)
-                {
-                    if (f.TURN.Visible)
-                    {
-                        if (!firstPlayer)
-                        {
-                            f.TURN.Visible = false;
-                            WriteMessages($"{CHANGE_TURN},{nPlayer}");
-                        }
-                        else
-                        {
-                            MessageBox.Show(msgError6x6, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        }
-                    }
-                    else
-                    {
-                        MessageBox.Show(msgErrorNotYourTurn, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
-                }
-                else
-                {
-                    MessageBox.Show(msgErrorNotEnoughtPlayers, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
+                f.TURN.Visible = false;
+                WriteMessages($"{CHANGE_TURN},{nPlayer}");
             }
             else
             {
-                MessageBox.Show(msgErrorDisconnected, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(msgErrorCannotPass, "No puedes pasar el turno.", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-
         }
 
         void ReloadBoard(string board, int nextPlayer, string messageWiner)
@@ -404,7 +364,7 @@ namespace WebSocketClientGraphicInterface.Controller
             {
                 if (messageWiner.Equals("BoardClosed"))
                 {
-                    WriteMessages($"{GET_TOTAL},{GetTotalPoints()}, {f.userName.Text}");
+                    WriteMessages($"{GET_TOTAL},{GetTotalPoints()},{f.userName.Text}");
                 }
                 else
                 {
