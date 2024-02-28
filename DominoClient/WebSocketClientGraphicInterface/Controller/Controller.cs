@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Rebar;
 
 namespace WebSocketClientGraphicInterface.Controller
 {
@@ -41,6 +42,7 @@ namespace WebSocketClientGraphicInterface.Controller
         private const string CAN_START = "puedo empezar";
         private const string GET_TOTAL = "GetTotal";
         private const string LOWEST_INTO_CLIENT = "LowesIntoClient";
+        private const string CAN_PUT = "CanPut";
         public Controller()
         {
             f = new Form1();
@@ -66,8 +68,25 @@ namespace WebSocketClientGraphicInterface.Controller
 
         void LoadData()
         {
+            List<string> nombresFamosos = new List<string> {
+            "Andri Lunin",
+            "Javi Galán",
+            "Germán Pezzella",
+            "Yeray Alvarez",
+            "Takefusa Kubo",
+            "Ilkay Gündogan",
+            "Kirian Rodriguez",
+            "Martin Zubimendi",
+            "Toni Kroos",
+            "Antoine Griezmann",
+            "Vinicius Jr.",
+            "Antonio Sivera",
+            "Horatiu Moldovan",
+            "Artem Dovbyk"};
+            Random rnd = new Random();
+            int indiceAleatorio = rnd.Next(0, nombresFamosos.Count);
             f.urlServer.Text = "localhost:44330";
-            f.userName.Text = Environment.UserName;
+            f.userName.Text = nombresFamosos[indiceAleatorio];
         }
 
         async void Btn_ConnectClicked(object sender, EventArgs e)
@@ -107,6 +126,7 @@ namespace WebSocketClientGraphicInterface.Controller
         {
             f.connect.Text = "PLAY GAME";
             f.connect.BackColor = Color.LightGreen;
+            f.connect.Enabled = false;
             f.urlServer.Enabled = true;
             f.userName.Enabled = true;
             connected = false;
@@ -152,6 +172,19 @@ namespace WebSocketClientGraphicInterface.Controller
                     Disconnect();
                     f.connect.Enabled = false;
                     break;
+                case CAN_PUT:
+                    bool puedeTirar = bool.Parse(content);
+                    string nBtn = message[4].Trim();
+                    Button btn = Buttons.Find(boton => boton.Name.Equals(nBtn, StringComparison.OrdinalIgnoreCase));
+                    if (puedeTirar)
+                    {
+                        tirarFicha(btn, message[3], message[2], f.TURN.Visible);
+                    }
+                    else if (!puedeTirar && f.TURN.Visible)
+                    {
+                        MessageBox.Show(msgErrorCannotPutTile, "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
+                    break;
                 default:
 
                     break;
@@ -182,6 +215,7 @@ namespace WebSocketClientGraphicInterface.Controller
 
         void TileClicked(object sender, MouseEventArgs e)
         {
+            Button b = (Button)sender;
             if (connected && canPlay && f.TURN.Visible)
             {
                 if (firstPlayer)
@@ -189,10 +223,8 @@ namespace WebSocketClientGraphicInterface.Controller
                     if ((sender as Button).Text.Equals("🂓"))
                     {
                         string side = e.Button == MouseButtons.Right ? RIGHT : "";
-
-
                         firstPlayer = false;
-                        PutTile((sender as Button), side, "");
+                        WriteMessages($"{CAN_PUT},{b.Text},{side},{""}, {b.Name}");
                     }
                     else
                     {
@@ -203,7 +235,7 @@ namespace WebSocketClientGraphicInterface.Controller
                 {
                     string side = e.Button == MouseButtons.Right ? RIGHT : "";
                     string boardTile = side == RIGHT ? f.board.Text.Substring(f.board.Text.Length - 2, 2) : f.board.Text.Substring(0, 2);
-                    PutTile((sender as Button), side, boardTile);
+                    WriteMessages($"{CAN_PUT},{b.Text},{side},{boardTile}, {b.Name}");
                 }
             }
             else
@@ -234,92 +266,15 @@ namespace WebSocketClientGraphicInterface.Controller
             return arr2;
         }
 
-
-        void PutTile(Button btn, string side, string boardTile)
+        void tirarFicha(Button btn, string lado, string ficha, bool turno)
         {
-            bool canPutTile = false;
-            string tile = btn.Text;
-            if (!String.IsNullOrEmpty(boardTile))
-            {
-                int[] positionsOfPlayerTile = GetSides(tile);
-                int[] positionsOfTileInBoard = GetSides(boardTile);
-                int numberToCompare = side == RIGHT ? positionsOfTileInBoard[1] : positionsOfTileInBoard[0];
-                if (side == RIGHT)
-                {
-                    if (positionsOfPlayerTile[0] == numberToCompare)
-                    {
-                        canPutTile = true;
-                    }
-                    else if (positionsOfPlayerTile[1] == numberToCompare)
-                    {
-                        tile = VirtualTiles[positionsOfPlayerTile[1], positionsOfPlayerTile[0]];
-                        canPutTile = true;
-                    }
-                    else
-                    {
-                        boardTile = f.board.Text.Substring(0, 2);
-                        positionsOfTileInBoard = GetSides(boardTile);
-                        numberToCompare = positionsOfTileInBoard[0];
-
-                        if (positionsOfPlayerTile[1] == numberToCompare)
-                        {
-                            side = "";
-                            canPutTile = true;
-                        }
-                        else if (positionsOfPlayerTile[0] == numberToCompare)
-                        {
-
-                            side = "";
-                            tile = VirtualTiles[positionsOfPlayerTile[1], positionsOfPlayerTile[0]];
-                            canPutTile = true;
-                        }
-                    }
-                }
-                else
-                {
-                    if (positionsOfPlayerTile[1] == numberToCompare)
-                    {
-                        canPutTile = true;
-                    }
-                    else if (positionsOfPlayerTile[0] == numberToCompare)
-                    {
-                        tile = VirtualTiles[positionsOfPlayerTile[1], positionsOfPlayerTile[0]];
-                        canPutTile = true;
-                    }
-                    else
-                    {
-                        boardTile = f.board.Text.Substring(f.board.Text.Length - 2, 2);
-                        positionsOfTileInBoard = GetSides(boardTile);
-                        numberToCompare = positionsOfTileInBoard[1];
-                        if (positionsOfPlayerTile[0] == numberToCompare)
-                        {
-                            side = RIGHT;
-                            canPutTile = true;
-                        }
-                        else if (positionsOfPlayerTile[1] == numberToCompare)
-                        {
-                            side = RIGHT;
-                            tile = VirtualTiles[positionsOfPlayerTile[1], positionsOfPlayerTile[0]];
-                            canPutTile = true;
-                        }
-                    }
-                }
-            }
-            else
-            {
-                canPutTile = true;
-            }
-            if (canPutTile)
+            if (turno)
             {
                 btn.Enabled = false;
                 btn.BackColor = Color.Transparent;
-                string winer = YouWin() ? "win" : "";
+                string ganador = YouWin() ? "win" : "";
                 f.TURN.Visible = false;
-                WriteMessages($"{RELOAD_BOARD},{tile},{side},{nPlayer},{winer}");
-            }
-            else
-            {
-                MessageBox.Show(msgErrorCannotPutTile, "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                WriteMessages($"{RELOAD_BOARD},{ficha},{lado},{nPlayer},{ganador}");
             }
         }
 
@@ -334,7 +289,6 @@ namespace WebSocketClientGraphicInterface.Controller
                         return new int[] { i, j };
                     }
                 }
-
             }
             return new int[] { -1, -1 };
         }

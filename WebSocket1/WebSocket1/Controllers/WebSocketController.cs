@@ -41,6 +41,7 @@ namespace WebSocket1.Controllers
             private const string CAN_START = "puedo empezar";
             private const string GET_TOTAL = "GetTotal";
             private const string LOWEST_INTO_CLIENT = "LowesIntoClient";
+            private const string CAN_PUT = "CanPut";
 
             public SocketHandler(string nom)
             {
@@ -88,6 +89,9 @@ namespace WebSocket1.Controllers
                     case GET_TOTAL:
                         GetTotalPoints(content, message[2]);
                         break;
+                    case CAN_PUT:
+                        TirarFicha(message[1], message[2], message[3], message[4]);
+                        break;
                 }
             }
             public void GetTotalPoints(string message, string username)
@@ -119,7 +123,78 @@ namespace WebSocket1.Controllers
             {
                 Sockets.Broadcast($"{CHANGE_TURN},{nextPlayer}");
             }
+            public void TirarFicha(string fichaBoton, string lado, string fichaTablero, string fichaOriginal)
+            {
+                bool tirarFicha = false;
+                if (!String.IsNullOrEmpty(fichaTablero))
+                {
+                    int[] valoresFichaBoton = GetSides(fichaBoton);
+                    int[] valoresFichaTablero = GetSides(fichaTablero);
+                    int numeroComparar = lado == RIGHT ? valoresFichaTablero[1] : valoresFichaTablero[0];
+                    if (lado == RIGHT)
+                    {
+                        if (valoresFichaBoton[0] == numeroComparar)
+                        {
+                            tirarFicha = true;
+                        }
+                        else if (valoresFichaBoton[1] == numeroComparar)
+                        {
+                            fichaBoton = VirtualTiles[valoresFichaBoton[1], valoresFichaBoton[0]];
+                            tirarFicha = true;
+                        }
+                        else
+                        {
+                            fichaTablero = board.Substring(0, 2);
+                            valoresFichaTablero = GetSides(fichaTablero);
+                            numeroComparar = valoresFichaTablero[0];
+                            if (valoresFichaBoton[1] == numeroComparar)
+                            {
+                                lado = "";
+                                tirarFicha = true;
+                            }
+                            else if (valoresFichaBoton[0] == numeroComparar)
+                            {
+                                lado = "";
+                                fichaBoton = VirtualTiles[valoresFichaBoton[1], valoresFichaBoton[0]];
+                                tirarFicha = true;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (valoresFichaBoton[1] == numeroComparar)
+                        {
+                            tirarFicha = true;
+                        }
+                        else if (valoresFichaBoton[0] == numeroComparar)
+                        {
+                            fichaBoton = VirtualTiles[valoresFichaBoton[1], valoresFichaBoton[0]];
+                            tirarFicha = true;
+                        }
+                        else
+                        {
+                            fichaTablero = board.Substring(board.Length - 2, 2);
+                            valoresFichaTablero = GetSides(fichaTablero);
+                            numeroComparar = valoresFichaTablero[1];
+                            if (valoresFichaBoton[0] == numeroComparar)
+                            {
 
+                            }
+                            else if (valoresFichaBoton[1] == numeroComparar)
+                            {
+                                lado = RIGHT;
+                                fichaBoton = VirtualTiles[valoresFichaBoton[1], valoresFichaBoton[0]];
+                                tirarFicha = true;
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    tirarFicha = true;
+                }
+                Sockets.Broadcast($"{CAN_PUT},{tirarFicha},{fichaBoton},{lado},{fichaOriginal}");
+            }
             public int GetNextPlayer(int currentPlayer)
             {
                 return currentPlayer < nPlayers ? currentPlayer + 1 : 1;
